@@ -1,39 +1,30 @@
 #!/usr/bin/env python
-# Python Network Programming Cookbook -- Chapter - 4
-import argparse
-import sys
+'''
+filename: 4_1_download_data.py
+interpreter: Python 3.6.5
+This file is a fork from chapter 4 of https://www.packtpub.com/networking-and-servers/python-network-programming-cookbook-second-edition
+'''
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
-DEFAULT_HOST = '127.0.0.1'
-DEFAULT_PORT = 8800
-class RequestHandler(BaseHTTPRequestHandler):
-    """ Custom request handler"""
-    def do_GET(self):
-        """ Handler for the GET requests """
-        self.send_response(200)
-        self.send_header('Content-type','text/html')
-        self.end_headers()
-        # Send the message to browser
-        self.wfile.write("Hello from server!")
-        return
-class CustomHTTPServer(HTTPServer):
-    "A custom HTTP server"
-    def __init__(self, host, port):
-        server_address = (host, port)
-        HTTPServer.__init__(self, server_address, RequestHandler)
-def run_server(port):
-    try:
-        server= CustomHTTPServer(DEFAULT_HOST, port)
-        print ("Custom HTTP server started on port: %s" % port)
-        server.serve_forever()
-    except Exception as err:
-        print ("Error:%s" %err)
-    except KeyboardInterrupt:
-        print ("Server interrupted and is shutting down...")
-        server.socket.close()
+import argparse
+import urllib.request
+
+REMOTE_SERVER_HOST = 'http://www.cnn.com'
+
+class HTTPClient:
+    def __init__(self, host):
+        self.host = host
+
+    def fetch(self):
+        response = urllib.request.urlopen(self.host)
+
+        data = response.read()
+        text = data.decode('utf-8')
+        return text
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Simple HTTP Server Example')
-    parser.add_argument('--port', action="store", dest="port", type=int, default=DEFAULT_PORT)
+    parser = argparse.ArgumentParser(description='HTTP Client Example')
+    parser.add_argument('--host', action="store", dest="host",  default=REMOTE_SERVER_HOST)
     given_args = parser.parse_args()
-    port = given_args.port
-    run_server(port)
+    host = given_args.host
+    client = HTTPClient(host)
+    print (client.fetch())
