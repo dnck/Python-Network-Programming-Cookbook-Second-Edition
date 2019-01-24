@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # Python Network Programming Cookbook -- Chapter - 4
-# This program requires Python 3.5.2 or any later version
-# It may run on any other version with/without modifications.
-#
 # Follow the comments inline to make it run on Python 2.7.x.
 
-import http.cookiejar 
+import http.cookiejar
 # Comment out the above line and uncomment the below for Python 2.7.x.
-#import cookielib 
+#import cookielib
 
 import urllib
 
@@ -19,8 +16,8 @@ ID_USERNAME = 'id_username'
 ID_PASSWORD = 'id_password'
 USERNAME = 'you@email.com'
 PASSWORD = 'mypassword'
-LOGIN_URL = 'https://bitbucket.org/account/signin/?next=/'
-NORMAL_URL = 'https://bitbucket.org/'
+LOGIN_URL = 'https://www.scienceopen.com/login'
+NORMAL_URL = 'https://www.scienceopen.com/'
 
 def extract_cookie_info():
     """ Fake login to a site with cookie"""
@@ -42,7 +39,7 @@ def extract_cookie_info():
 
     resp = opener.open(LOGIN_URL, login_data)
 
-    # send login info 
+    # send login info
     for cookie in cj:
         print ("----First time cookie: %s --> %s" %(cookie.name, cookie.value))
     print ("Headers: %s" %resp.headers)
@@ -51,7 +48,7 @@ def extract_cookie_info():
     resp = opener.open(NORMAL_URL)
     for cookie in cj:
         print ("++++Second time cookie: %s --> %s" %(cookie.name, cookie.value))
-    
+
     print ("Headers: %s" %resp.headers)
 
 if __name__ == '__main__':
